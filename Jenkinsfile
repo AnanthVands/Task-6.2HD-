@@ -3,14 +3,17 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-id')
+        
         SONARQUBE_CREDENTIALS = credentials('sonarqube-id')
+
+        SHELL = '/bin/zsh'
     }
 
     stages {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build('ananthvands/book-haven:latest')
+                    sh '$SHELL -c "docker build -t ananthvands/book-haven:latest ."'
                 }
             }
         }
@@ -28,8 +31,8 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    sh 'npm install'
-                    sh 'npm test'
+                    sh '$SHELL -c "npm install"'
+                    sh '$SHELL -c "npm test"'
                 }
             }
         }
@@ -37,7 +40,7 @@ pipeline {
         stage('Code Quality') {
             steps {
                 script {
-                    sh 'sonar-scanner'
+                    sh '$SHELL -c "sonar-scanner -Dsonar.login=$SONARQUBE_CREDENTIALS"'
                 }
             }
         }
@@ -45,15 +48,17 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 script {
-                    sh 'docker-compose pull'
-                    sh 'docker-compose up -d'
+                    sh '$SHELL -c "docker-compose pull"'
+                    sh '$SHELL -c "docker-compose up -d"'
                 }
             }
         }
     }
+
+    post {
+        always {
+            echo 'Cleaning up Docker resources...'
+            sh '$SHELL -c "docker system prune -f"'
+        }
+    }
 }
-
-
-
-
-
