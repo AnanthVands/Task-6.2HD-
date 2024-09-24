@@ -1,0 +1,111 @@
+<%- include('header') %>
+<main>
+    <div id="bookCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#bookCarousel" data-bs-slide-to="0" class="active"
+                aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#bookCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#bookCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="4000">
+                <img src="/books.jpg" class="d-block w-100" alt="Cover">
+                <div class="carousel-caption">
+                    <h1 class="text-center">The Book Haven</h1>
+                    <h3 class="fw-bolder text-center"> We love books and we sell books!</h3>
+                </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="2000">
+                <img src="/books5.jpg" class="d-block w-100" alt="New">
+                <div class="carousel-caption">
+                    <h1 class="text-center">Our Curated List of Books</h1>
+                    <p>See what we have in stock now!</p>
+                        <a href="/list" class="btn btn-primary">Explore</a>
+                </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+                <img src="/books4.jpg" class="d-block w-100" alt="Special">
+                <div class="carousel-caption">
+                    <h1 class="text-center">Community Reviews</h1>
+                    <p>Post a review or see what other readers have to say about your favorite books!</p>
+                        <a href="/reviews" class="btn btn-primary">Explore</a>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#bookCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#bookCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+    </div>
+    <div class="container text-center">
+        <form action="/search" method="POST" class="d-flex justify-content-center">
+            <div class="input-group" style="max-width: 800px;">
+                <input type="search" name="booksearch" class="form-control" placeholder="Search by title or author">
+                <button type="submit" class="btn btn-primary">Go</button>
+            </div>
+        </form>
+    </div>
+    <div class="container-fluid">
+        <h2 class="text-center fw-bolder">Splendid! Time to get reading!</h2>
+        <p class="text-center">We're delighted to welcome you to a world of literature and imagination. Our curated collection spans a diverse range of genres, from timeless classics and profound philosophy to captivating science fiction and enchanting fantasy. Whether you're an avid reader or just starting your literary journey, you'll find something to inspire and delight you.
+        </p>
+        <p class="text-center">
+            We hope you enjoy exploring our collection, and we look forward to being a part of your reading journey.
+        </p>
+        <div class="row my-4">
+            <div class="col-md-3 col-sm-6">
+                <div class="card card-background text-center">
+                    <div class="card-header">
+                        <h3>Popular this Week</h3>
+                    </div>
+                    <img src="/popular.jpg" class="card-img-top" alt="Sci-Fi">
+                    <div class="card-body">
+                        <p>Explore the universe of futuristic technology, space exploration, and dystopian societies.</p>
+                        <a href="/popular" class="btn btn-primary">Explore Popular</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card card-background text-center">
+                    <div class="card-header">
+                        <h3>Best of Scifi</h3>
+                    </div>
+                    <img src="/scifi.jpg" class="card-img-top" alt="Classical Literature">
+                    <div class="card-body">
+                        <p>Travel back in time with classical literature. From Shakespeare to Jane Austen, delve into timeless stories.</p>
+                        <a href="/scifi" class="btn btn-primary">Explore Scifi</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card card-background text-center">
+                    <div class="card-header">
+                        <h3>Our Philosophy Picks!</h3>
+                    </div>
+                    <img src="/philosophy.jpg" class="card-img-top" alt="Philosophy">
+                    <div class="card-body">
+                        <p>Engage with the great thinkers and their profound insights. From Greek philosophy to modern existentialism.</p>
+                        <a href="/philosophy" class="btn btn-primary">Explore Philosophy</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card card-background text-center">
+                    <div class="card-header">
+                        <h3>All Time Greats</h3>
+                    </div>
+                    <img src="/canon.jpg" class="card-img-top" alt="Fantasy">
+                    <div class="card-body">
+                        <p>Escape to magical realms filled with dragons, wizards, and mythical creatures.</p>
+                        <a href="/classics" class="btn btn-primary">Explore the Classics</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<%- include('footer') %>

@@ -1,0 +1,196 @@
+<%- include('header') %>
+
+<head>
+    <script>
+        function updateFooterDate() {
+            var footerDate = document.getElementById("current-date");
+            var today = new Date();
+            var formattedDate = today.toLocaleDateString("en-GB", {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            });
+            footerDate.textContent = formattedDate;
+        }
+
+        document.addEventListener("DOMContentLoaded", updateFooterDate);
+
+        function validateOrderForm() {
+            event.preventDefault();
+            var form = document.forms["orderForm"];
+            var isValid = true;
+
+            var email = form["email"].value;
+            var password = form["password"].value;
+            var mobile = form["mobile"].value;
+
+
+            if (!/@/.test(email)) {
+                document.getElementById("emailMsg").innerHTML = "<em class='text-danger'>Email must contain '@'.</em>";
+                isValid = false;
+            } else {
+                document.getElementById("emailMsg").innerHTML = "<em class='text-success'>Valid email.</em>";
+            }
+
+            if (password.length < 7) {
+                document.getElementById("pwdMsg").innerHTML = "<em class='text-danger'>Password must be at least 7 characters long.</em>";
+                isValid = false;
+            } else {
+                document.getElementById("pwdMsg").innerHTML = "<em class='text-success'>Valid password.</em>";
+            }
+
+            if (mobile.length !== 10 || !/^\d{10}$/.test(mobile)) {
+                document.getElementById("mobileMsg").innerHTML = "<em class='text-danger'>Phone number must be 10 digits and contain numbers only.</em>";
+                isValid = false;
+            } else {
+                document.getElementById("mobileMsg").innerHTML = "<em class='text-success'>Valid phone number.</em>";
+            }
+
+            if (isValid) {
+                form.submit();
+            }
+
+            return isValid;
+        }
+    </script>
+</head>
+<header>
+    <div class="container-fluid">
+        <h1>The Book Haven</h1>
+    </div>
+</header>
+<main>
+    <div class="container-fluid">
+        <h2 class="text-center">Order Information Form</h2>
+        <form name="orderForm" onsubmit="return validateOrderForm()" action="/submitOrder" method="POST">
+            <h3>Login Details</h3>
+
+            <div class="row mb-3">
+                <div class="col-sm-2">
+                    <label for="email">Email:</label>
+                </div>
+
+                <div class="col-sm-7">
+                    <input type="text" name="email" id="email" class="form-control" required>
+                </div>
+
+                <div class="col-sm-3">
+                    <span id="emailMsg"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-2">
+                    <label for="password">Password:</label>
+                </div>
+
+                <div class="col-sm-7">
+                    <input type="password" name="password" id="password" class="form-control"
+                        placeholder="Must be 7 or more characters" required>
+                </div>
+
+                <div class="col-sm-3">
+                    <span id="pwdMsg"></span>
+                </div>
+            </div>
+
+            <h3>Contact Details</h3>
+            <div class="row mb-3">
+                <div class="col-sm-2">
+                    <label for="firstname">First Name:</label>
+                </div>
+                <div class="col-sm-7">
+                    <input type="text" name="firstname" id="firstname" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-2">
+                    <label for="surname">Surname:</label>
+                </div>
+                <div class="col-sm-7">
+                    <input type="text" name="surname" id="surname" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-2">
+                    <label for="mobile">Mobile:</label>
+                </div>
+                <div class="col-sm-7">
+                    <input type="tel" name="mobile" id="mobile" class="form-control" required>
+                </div>
+                <div class="col-sm-3">
+                    <span id="mobileMsg"></span>
+                </div>
+            </div>
+
+            <div class="mb-5">
+                <label for="dateofbirth" class="form-label">Date of Birth:</label>
+                <input type="date" class="form-control" id="dateofbirth" name="dateofbirth" required>
+            </div>
+
+            <h3>Address Details</h3>
+            <div class="row mb-3">
+                <div class="col-sm-2">
+                    <label for="address">Address :</label>
+                </div>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" id="address" name="address"
+                        placeholder="Apartment, studio, or floor" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-2">
+                    <label for="city">City:</label>
+                </div>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" id="city" name="city" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-sm-2">
+                    <label for="state">State:</label>
+                </div>
+                <div class="col-sm-7">
+                    <select class="form-select" id="state" name="state" required>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="ACT">ACT</option>
+                        <option value="NSW">NSW</option>
+                        <option value="NT">NT</option>
+                        <option value="QLD">QLD</option>
+                        <option value="SA">SA</option>
+                        <option value="TAS">TAS</option>
+                        <option value="VIC">VIC</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-5">
+                <div class="col-sm-2">
+                    <label for="postcode">Postcode:</label>
+                </div>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" id="postcode" name="postcode" required>
+                </div>
+            </div>
+
+            <h3>Send us your queries and feedback!</h3>
+            <div class="mb-5">
+                <label for="query" class="form-label">Your message:</label>
+                <textarea class="form-control" id="query" name="query" rows="5"
+                    placeholder="Enter your question or message here."></textarea>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-9">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</main>
+<%- include('footer') %>

@@ -1,0 +1,22 @@
+<%- include('header') %>
+<header>
+    <div class="container-fluid">
+        <h1>The Book Haven</h1>
+    </div>
+</header>
+
+<main>
+    <h2>Order Confirmation</h2>
+    <p>Thank you for your order, <%= firstname %> <%= surname %>!</p>
+    <p>We have received your order with the following details:</p>
+    <ul>
+        <li>First Name: <%= firstname %></li>
+        <li>Surname: <%= surname %></li>
+        <li>Email: <%= email %></li>
+        <li>Mobile: <%= mobile %></li>
+        <li>Address: <%= address %>, <%= city %>, <%= state %></li>
+    </ul>
+    <p>We will process your order shortly.</p>
+</main>
+
+<%- include('footer') %>

@@ -1,0 +1,69 @@
+<%- include('header') %>
+
+<header>
+    <div class="container text-center">
+        <h1>The Book Haven</h1>
+        <p>We'd love to hear from you. Reach out with any questions, comments, or suggestions.</p>
+    </div>
+</header>
+
+<main>
+    <div class="container-form-container">
+        <div class="contact-info">
+            <h2>Contact Us</h2>
+            <p><strong>Address:</strong> 123 Main Street, Melbourne, 12345</p>
+            <p><strong>Phone:</strong> 123 456 7890</p>
+            <p><strong>Email:</strong> <a href="mailto:info@bookhaven.com">info@bookhaven.com</a></p>
+            <p><strong>Business Hours:</strong> Monday to Friday, 9:00 AM - 5:00 PM</p>
+        </div>
+
+        <div class="contact-form">
+            <h2>Send us a Message</h2>
+            <form name="contactForm" onsubmit="return validateContactForm()">
+                <div class="row mb-3">
+                    <div class="col-sm-2">
+                        <label for="name">Name:</label>
+                    </div>
+                    <div class="col-sm-7">
+                        <input type="text" name="name" id="name" class="form-control">
+                    </div>
+                    <div class="col-sm-3">
+                        <span id="nameMsg"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-2">
+                        <label for="email">Email:</label>
+                    </div>
+                    <div class="col-sm-7">
+                        <input type="text" name="email" id= "email" class="form-control">
+                    </div>
+                    <div class="col-sm-3">
+                        <span id="emailMsg"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-2">
+                        <label for="mobile">Mobile:</label>
+                    </div>
+                    <div class="col-sm-7">
+                        <input type="tel" name="mobile" id = "mobile" class="form-control">
+                    </div>
+                    <div class="col-sm-3">
+                        <span id="mobileMsg"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="message" class="form-label">Your Message:</label>
+                    <textarea class="form-control" id="message" name="message" rows="5"
+                        placeholder="Enter your question or feedback here." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+    </div>
+</main>
+<%- include('footer') %>

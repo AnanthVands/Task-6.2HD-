@@ -1,0 +1,25 @@
+<%- include('header') %>
+<header>
+    <div class="container-fluid">
+        <h1>The Book Haven</h1>
+    </div>
+</header>
+<main class="container text-center mt-4">
+  <h2>Search Results for "<%= searchTerm %>"</h2>
+  <% if (books.length > 0) { %>
+      <ul class="list-group mt-4">
+          <% books.forEach(book => { %>
+              <li class="list-group-item">
+                <p><strong>Book Title:</strong> <%= book.title %></p>
+                <p><strong>Author:</strong> <%= book.author %></p>
+                <p><strong>ISBN:</strong> <%= book.ISBN %></p>
+              </li>
+          <% }) %>
+      </ul>
+  <% } else { %>
+      <p>No results found for "<%= searchTerm %>".</p>
+  <% } %>
+  <a href="/list" class="btn btn-primary mt-4 mb-4">See a full list of our books!</a>
+  <a href="/" class="btn btn-primary mt-4 mb-4">Back to Home</a>
+</main>
+  <%- include('footer') %>

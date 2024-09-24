@@ -1,0 +1,19 @@
+<%- include('header') %>
+<header>
+    <div class="container-fluid">
+        <h1>The Book Haven</h1>
+        <h2>List of Our Handpicked Books </h2>
+    </div>
+</header>
+<main>
+    <ul class="list-group mt-4">
+        <% books.forEach(book => { %>
+            <li class="list-group-item custom-list-group-item ">
+                <p><strong>Book Title:</strong> <%= book.title %></p>
+                <p><strong>Author:</strong> <%= book.author %></p>
+                <p><strong>ISBN:</strong> <%= book.ISBN %></p>
+            </li>
+        <% }); %>
+    </ul>
+</main>
+<%- include('footer') %>
