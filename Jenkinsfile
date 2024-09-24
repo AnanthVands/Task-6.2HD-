@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-id')
-        SONARQUBE_CREDENTIALS = credentials('sonarqube-id')
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-id')  
+        SONARQUBE_CREDENTIALS = credentials('sonarqube-id')   
     }
 
     stages {
@@ -37,7 +37,7 @@ pipeline {
         stage('Code Quality') {
             steps {
                 script {
-                    sh 'sonar-scanner -Dsonar.login=$SONARQUBE_CREDENTIALS'
+                    sh "sonar-scanner -Dsonar.login=$SONARQUBE_CREDENTIALS"
                 }
             }
         }
@@ -55,9 +55,7 @@ pipeline {
     post {
         always {
             echo 'Cleaning up Docker resources...'
-            script {
-                docker.systemPrune()
-            }
+            sh 'docker system prune -f'
         }
     }
 }
