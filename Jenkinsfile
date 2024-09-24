@@ -10,7 +10,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build('yourdockerhubusername/book-haven:latest')
+                    docker.build('ananthvands/book-haven:latest')
                 }
             }
         }
@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', "$DOCKERHUB_CREDENTIALS") {
-                        docker.image('yourdockerhubusername/book-haven:latest').push('latest')
+                        docker.image('ananthvands/book-haven:latest').push('latest')
                     }
                 }
             }
