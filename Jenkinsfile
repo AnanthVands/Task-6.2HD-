@@ -18,8 +18,8 @@ pipeline {
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', "$DOCKERHUB_CREDENTIALS") {
-                        docker.image('ananthvands/book-haven:latest').push('latest')
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-id') {
+                    docker.image('ananthvands/book-haven:latest').push('latest')
                     }
                 }
             }
