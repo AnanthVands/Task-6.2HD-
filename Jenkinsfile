@@ -12,6 +12,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                    echo 'Building Docker Image...'
                     sh "${env.DOCKER_PATH} build -t ananthvands/book-haven:latest ."
                 }
             }
@@ -20,6 +21,7 @@ pipeline {
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
+                    echo 'Pushing Docker Image to Docker Hub...'
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-id') {
                         sh "${env.DOCKER_PATH} push ananthvands/book-haven:latest"
                     }
@@ -30,6 +32,7 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 script {
+                    echo 'Deploying to Staging...'
                     sh "${env.DOCKER_COMPOSE_PATH} pull"
                     sh "${env.DOCKER_COMPOSE_PATH} up -d"
                 }
@@ -39,7 +42,9 @@ pipeline {
         stage('Run Selenium Tests') {
             steps {
                 script {
-                    sh "docker run --rm -v \$(pwd):/app ananthvands/python-selenium:latest"
+                    echo 'Running Selenium Tests...'
+                    sh "pwd"
+                    sh "${env.DOCKER_PATH} run --rm -v \$(pwd):/app ananthvands/python-selenium:latest python3 /app/test_selenium.py"
                 }
             }
         }
@@ -47,9 +52,8 @@ pipeline {
 
     post {
         always {
-            script {
-                sh "${env.DOCKER_PATH} system prune -f"
-            }
+            echo 'Cleaning up Docker resources...'
+            sh "${env.DOCKER_PATH} system prune -f"
         }
     }
 }
