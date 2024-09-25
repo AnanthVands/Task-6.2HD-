@@ -8,10 +8,6 @@ pipeline {
         DOCKER_COMPOSE_PATH = "/usr/local/bin/docker-compose"  
     }
 
-    tools {
-        sonarQubeScanner 'SonarQube-Scanner' 
-    }
-
     stages {
         stage('Build Docker Image') {
             steps {
@@ -48,7 +44,7 @@ pipeline {
                 script {
                     echo 'Running SonarQube analysis...'
                     withSonarQubeEnv('SonarQubeServer') { 
-                        sh "sonar-scanner"
+                        sh 'sonar-scanner'
                     }
                 }
             }
@@ -62,3 +58,4 @@ pipeline {
         }
     }
 }
+
