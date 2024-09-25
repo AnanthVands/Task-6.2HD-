@@ -6,15 +6,13 @@ pipeline {
         SONARQUBE_CREDENTIALS = credentials('sonarqube-id')
         DOCKER_PATH = "/usr/bin/docker"
         DOCKER_COMPOSE_PATH = "/usr/local/bin/docker-compose"
-        CHROME_DRIVER_PATH = "/usr/local/bin/chromedriver"  // Optional for ChromeDriver path
     }
 
     stages {
         stage('Build Docker Image') {
             steps {
                 script {
-                    echo 'Checking Docker availability in Build Docker Image stage...'
-                    sh "${env.DOCKER_PATH} --version"
+                    echo 'Building Docker Image...'
                     sh "${env.DOCKER_PATH} build -t ananthvands/book-haven:latest ."
                 }
             }
@@ -23,8 +21,7 @@ pipeline {
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
-                    echo 'Checking Docker availability in Push Docker Image stage...'
-                    sh "${env.DOCKER_PATH} --version"
+                    echo 'Pushing Docker Image to Docker Hub...'
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-id') {
                         sh "${env.DOCKER_PATH} push ananthvands/book-haven:latest"
                     }
@@ -35,20 +32,9 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 script {
-                    echo 'Checking Docker Compose availability in Deploy to Staging stage...'
-                    sh "${env.DOCKER_COMPOSE_PATH} --version"
+                    echo 'Deploying to Staging...'
                     sh "${env.DOCKER_COMPOSE_PATH} pull"
                     sh "${env.DOCKER_COMPOSE_PATH} up -d"
-                }
-            }
-        }
-
-        stage('Install Selenium') {
-            steps {
-                script {
-                    echo 'Installing Selenium and other dependencies...'
-                    
-                    sh 'pip3 install selenium webdriver-manager'
                 }
             }
         }
@@ -57,7 +43,9 @@ pipeline {
             steps {
                 script {
                     echo 'Running Selenium Tests...'
-                    sh 'python3 test_selenium.py'  
+                    docker.image('ananthvands/python-selenium:latest').inside {
+                        sh 'python3 test_selenium.py'
+                    }
                 }
             }
         }
@@ -66,11 +54,7 @@ pipeline {
     post {
         always {
             echo 'Cleaning up Docker resources...'
-            withEnv(['PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin']) {
-                echo 'Checking Docker availability in post-cleanup stage...'
-                sh "${env.DOCKER_PATH} --version"
-                sh "${env.DOCKER_PATH} system prune -f"
-            }
+            sh "${env.DOCKER_PATH} system prune -f"
         }
     }
 }
