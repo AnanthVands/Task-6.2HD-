@@ -12,6 +12,9 @@ pipeline {
             steps {
                 withEnv(['PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin']) {
                     script {
+                        echo 'Checking Docker availability in Build Docker Image stage...'
+                        sh 'which docker'
+                        sh 'docker --version'
                         docker.build('ananthvands/book-haven:latest')
                     }
                 }
@@ -20,8 +23,11 @@ pipeline {
 
         stage('Push Docker Image to Docker Hub') {
             steps {
-                withEnv(['PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin']) { 
+                withEnv(['PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin']) {
                     script {
+                        echo 'Checking Docker availability in Push Docker Image stage...'
+                        sh 'which docker'
+                        sh 'docker --version'
                         docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-id') {
                             docker.image('ananthvands/book-haven:latest').push('latest')
                         }
@@ -33,6 +39,9 @@ pipeline {
         stage('Test') {
             steps {
                 script {
+                    echo 'Checking Docker availability in Test stage...'
+                    sh 'which docker'
+                    sh 'docker --version'
                     sh 'npm install'
                     sh 'npm test'
                 }
@@ -42,6 +51,9 @@ pipeline {
         stage('Code Quality') {
             steps {
                 script {
+                    echo 'Checking Docker availability in Code Quality stage...'
+                    sh 'which docker'
+                    sh 'docker --version'
                     sh "sonar-scanner -Dsonar.login=$SONARQUBE_CREDENTIALS"
                 }
             }
@@ -49,9 +61,14 @@ pipeline {
 
         stage('Deploy to Staging') {
             steps {
-                script {
-                    sh 'docker-compose pull'
-                    sh 'docker-compose up -d'
+                withEnv(['PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin']) {
+                    script {
+                        echo 'Checking Docker availability in Deploy to Staging stage...'
+                        sh 'which docker'
+                        sh 'docker --version'
+                        sh 'docker-compose pull'
+                        sh 'docker-compose up -d'
+                    }
                 }
             }
         }
@@ -60,7 +77,12 @@ pipeline {
     post {
         always {
             echo 'Cleaning up Docker resources...'
-            sh 'docker system prune -f'
+            withEnv(['PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin']) {
+                echo 'Checking Docker availability in post-cleanup stage...'
+                sh 'which docker'
+                sh 'docker --version'
+                sh 'docker system prune -f'
+            }
         }
     }
 }
