@@ -5,7 +5,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-id')
         SONARQUBE_CREDENTIALS = credentials('sonarqube-id')
         DOCKER_PATH = "/usr/bin/docker"
-        DOCKER_COMPOSE_PATH = "/usr/local/bin/docker-compose"  
+        DOCKER_COMPOSE_PATH = "/usr/local/bin/docker-compose"
     }
 
     stages {
@@ -43,8 +43,10 @@ pipeline {
             steps {
                 script {
                     echo 'Running SonarQube analysis...'
-                    withSonarQubeEnv('SonarQubeServer') { 
-                        sh 'sonar-scanner'
+                    withSonarQubeEnv('SonarQubeServer') {
+                        def scannerHome = tool 'SonarQube-Scanner'
+                        echo "SonarQube Scanner path: ${scannerHome}" 
+                        sh "${scannerHome}/bin/sonar-scanner" 
                     }
                 }
             }
@@ -58,4 +60,3 @@ pipeline {
         }
     }
 }
-
