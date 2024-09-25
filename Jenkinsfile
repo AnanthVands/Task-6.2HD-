@@ -45,7 +45,7 @@ pipeline {
     post {
         always {
             echo 'Cleaning up Docker resources...'
-            script {
+            withEnv(['PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin']) {  
                 echo 'Checking Docker availability in post-cleanup stage...'
                 sh "${env.DOCKER_PATH} --version"  
                 sh 'docker system prune -f'
