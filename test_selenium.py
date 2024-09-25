@@ -1,26 +1,19 @@
-pip install selenium
-
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
-try:
-    driver.get("http://your-website-url.com")  
+driver.get("http://localhost:8080") 
 
-    time.sleep(5) 
+time.sleep(3)
 
-    title = driver.title
+assert "The Book Haven" in driver.title, "Website did not load properly"
 
-    if title:
-        print(f"Deployment successful! The page title is: {title}")
-    else:
-        print("Test failed: No title found. Deployment might have failed.")
+driver.save_screenshot("book_haven_screenshot.png")
 
-except Exception as e:
-    print(f"Test failed due to error: {str(e)}")
+driver.quit()
 
-finally:
-    driver.quit()
+print("Test Passed! Website loaded successfully.")
