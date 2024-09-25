@@ -44,7 +44,8 @@ pipeline {
                 script {
                     echo 'Running Selenium Tests...'
                     sh "pwd"
-                    sh "${env.DOCKER_PATH} run --rm -v \$(pwd):/app ananthvands/python-selenium:latest python3 /app/test_selenium.py"
+                    
+                    sh "${env.DOCKER_PATH} run --rm -v /var/jenkins_home/workspace/Task-6.2HD:/app ananthvands/python-selenium:latest python3 /app/test_selenium.py"
                 }
             }
         }
