@@ -5,7 +5,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-id')
         SONARQUBE_CREDENTIALS = credentials('sonarqube-id')
         DOCKER_PATH = "/usr/bin/docker"
-        DOCKER_COMPOSE_PATH = "/usr/local/bin/docker-compose" 
+        DOCKER_COMPOSE_PATH = "/usr/local/bin/docker-compose"  // Use the correct path here
     }
 
     stages {
@@ -34,11 +34,10 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 script {
-                    echo 'Checking Docker availability in Deploy to Staging stage...'
-                    sh "${env.DOCKER_PATH} --version"
-                    sh "${env.DOCKER_COMPOSE_PATH} --version"  
-                    sh "${env.DOCKER_COMPOSE_PATH} pull"        
-                    sh "${env.DOCKER_COMPOSE_PATH} up -d"      
+                    echo 'Checking Docker Compose availability in Deploy to Staging stage...'
+                    sh "${env.DOCKER_COMPOSE_PATH} --version"
+                    sh "${env.DOCKER_COMPOSE_PATH} pull"
+                    sh "${env.DOCKER_COMPOSE_PATH} up -d"
                 }
             }
         }
@@ -47,9 +46,11 @@ pipeline {
     post {
         always {
             echo 'Cleaning up Docker resources...'
-            withEnv(['PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin']) {
+            withEnv(['PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin']) {
                 echo 'Checking Docker availability in post-cleanup stage...'
                 sh "${env.DOCKER_PATH} --version"
                 sh "${env.DOCKER_PATH} system prune -f"
             }
-       
+        }
+    }
+}
