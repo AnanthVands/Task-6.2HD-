@@ -2,8 +2,9 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-id')  
-        SONARQUBE_CREDENTIALS = credentials('sonarqube-id')   
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-id')
+        SONARQUBE_CREDENTIALS = credentials('sonarqube-id')
+        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
     }
 
     stages {
@@ -17,9 +18,11 @@ pipeline {
 
         stage('Push Docker Image to Docker Hub') {
             steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-id') {
-                    docker.image('ananthvands/book-haven:latest').push('latest')
+                withEnv(['PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin']) {
+                    script {
+                        docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-id') {
+                            docker.image('ananthvands/book-haven:latest').push('latest')
+                        }
                     }
                 }
             }
@@ -36,17 +39,21 @@ pipeline {
 
         stage('Code Quality') {
             steps {
-                script {
-                    sh "sonar-scanner -Dsonar.login=$SONARQUBE_CREDENTIALS"
+                withEnv(['PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin']) {
+                    script {
+                        sh "sonar-scanner -Dsonar.login=$SONARQUBE_CREDENTIALS"
+                    }
                 }
             }
         }
 
         stage('Deploy to Staging') {
             steps {
-                script {
-                    sh 'docker-compose pull'
-                    sh 'docker-compose up -d'
+                withEnv(['PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin']) {
+                    script {
+                        sh 'docker-compose pull'
+                        sh 'docker-compose up -d'
+                    }
                 }
             }
         }
@@ -59,4 +66,3 @@ pipeline {
         }
     }
 }
-
