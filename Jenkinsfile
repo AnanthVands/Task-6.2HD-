@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-id')
         SONARQUBE_CREDENTIALS = credentials('sonarqube-id')
-        DOCKER_PATH = "/usr/local/bin/docker"  
+        DOCKER_PATH = "/usr/local/bin/docker"
     }
 
     stages {
@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     echo 'Checking Docker availability in Build Docker Image stage...'
-                    sh "${env.DOCKER_PATH} --version"  
+                    sh "${env.DOCKER_PATH} --version"
                     sh "${env.DOCKER_PATH} build -t ananthvands/book-haven:latest ."
                 }
             }
@@ -24,7 +24,7 @@ pipeline {
                     echo 'Checking Docker availability in Push Docker Image stage...'
                     sh "${env.DOCKER_PATH} --version"
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-id') {
-                        sh "${env.DOCKER_PATH} push ananthvands/book-haven:latest" 
+                        sh "${env.DOCKER_PATH} push ananthvands/book-haven:latest"
                     }
                 }
             }
