@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  web:
+    image: ananthvands/book-haven:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
