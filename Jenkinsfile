@@ -5,7 +5,8 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-id')
         SONARQUBE_CREDENTIALS = credentials('sonarqube-id')
         DOCKER_PATH = "/usr/bin/docker"
-        DOCKER_COMPOSE_PATH = "/usr/local/bin/docker-compose"  
+        DOCKER_COMPOSE_PATH = "/usr/local/bin/docker-compose"
+        CHROME_DRIVER_PATH = "/usr/local/bin/chromedriver" 
     }
 
     stages {
@@ -38,6 +39,16 @@ pipeline {
                     sh "${env.DOCKER_COMPOSE_PATH} --version"
                     sh "${env.DOCKER_COMPOSE_PATH} pull"
                     sh "${env.DOCKER_COMPOSE_PATH} up -d"
+                }
+            }
+        }
+
+        stage('Run Selenium Tests') {
+            steps {
+                script {
+                    echo 'Running Selenium Tests...'
+                    
+                    sh 'python3 test_selenium.py'
                 }
             }
         }
