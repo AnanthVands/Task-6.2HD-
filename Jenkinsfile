@@ -5,7 +5,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-id')
         SONARQUBE_CREDENTIALS = credentials('sonarqube-id')
         DOCKER_PATH = "/usr/bin/docker"
-        DOCKER_COMPOSE_PATH = "/usr/local/bin/docker-compose"  // Use the correct path here
+        DOCKER_COMPOSE_PATH = "/usr/local/bin/docker-compose"  
     }
 
     stages {
