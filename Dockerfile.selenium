@@ -28,8 +28,7 @@ RUN CHROME_VERSION=$(google-chrome --version | grep -oP "\d+\.\d+\.\d+\.\d+") &&
     unzip /tmp/chromedriver.zip -d /usr/local/bin/ && \
     rm /tmp/chromedriver.zip
 
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install selenium webdriver-manager
 
 COPY test_selenium.py /app/test_selenium.py
 

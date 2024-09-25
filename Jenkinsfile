@@ -8,6 +8,10 @@ pipeline {
         DOCKER_COMPOSE_PATH = "/usr/local/bin/docker-compose"  
     }
 
+    tools {
+        sonarQubeScanner 'SonarQube-Scanner' 
+    }
+
     stages {
         stage('Build Docker Image') {
             steps {
@@ -39,13 +43,13 @@ pipeline {
             }
         }
 
-        stage('Run Selenium Tests') {
+        stage('Code Quality Analysis') {
             steps {
                 script {
-                    echo 'Running Selenium Tests...'
-                    sh "pwd"
-                    
-                    sh "${env.DOCKER_PATH} run --rm -v /var/jenkins_home/workspace/Task-6.2HD:/app ananthvands/python-selenium:latest python3 /app/test_selenium.py"
+                    echo 'Running SonarQube analysis...'
+                    withSonarQubeEnv('SonarQubeServer') { 
+                        sh "sonar-scanner"
+                    }
                 }
             }
         }
