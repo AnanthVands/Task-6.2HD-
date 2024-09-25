@@ -6,7 +6,7 @@ pipeline {
         SONARQUBE_CREDENTIALS = credentials('sonarqube-id')
         DOCKER_PATH = "/usr/bin/docker"
         DOCKER_COMPOSE_PATH = "/usr/local/bin/docker-compose"
-        CHROME_DRIVER_PATH = "/usr/local/bin/chromedriver" 
+        CHROME_DRIVER_PATH = "/usr/local/bin/chromedriver"  // Optional for ChromeDriver path
     }
 
     stages {
@@ -43,12 +43,21 @@ pipeline {
             }
         }
 
+        stage('Install Selenium') {
+            steps {
+                script {
+                    echo 'Installing Selenium and other dependencies...'
+                    
+                    sh 'pip3 install selenium webdriver-manager'
+                }
+            }
+        }
+
         stage('Run Selenium Tests') {
             steps {
                 script {
                     echo 'Running Selenium Tests...'
-                    
-                    sh 'python3 test_selenium.py'
+                    sh 'python3 test_selenium.py'  
                 }
             }
         }
