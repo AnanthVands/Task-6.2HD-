@@ -5,14 +5,13 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-id')
         SONARQUBE_CREDENTIALS = credentials('sonarqube-id')
         DOCKER_PATH = "/usr/bin/docker"
-        DOCKER_COMPOSE_PATH = "/usr/local/bin/docker-compose"
+        DOCKER_COMPOSE_PATH = "/usr/local/bin/docker-compose"  
     }
 
     stages {
         stage('Build Docker Image') {
             steps {
                 script {
-                    echo 'Building Docker Image...'
                     sh "${env.DOCKER_PATH} build -t ananthvands/book-haven:latest ."
                 }
             }
@@ -21,7 +20,6 @@ pipeline {
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
-                    echo 'Pushing Docker Image to Docker Hub...'
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-id') {
                         sh "${env.DOCKER_PATH} push ananthvands/book-haven:latest"
                     }
@@ -32,7 +30,6 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 script {
-                    echo 'Deploying to Staging...'
                     sh "${env.DOCKER_COMPOSE_PATH} pull"
                     sh "${env.DOCKER_COMPOSE_PATH} up -d"
                 }
@@ -42,10 +39,7 @@ pipeline {
         stage('Run Selenium Tests') {
             steps {
                 script {
-                    echo 'Running Selenium Tests...'
-                    docker.image('ananthvands/python-selenium:latest').inside {
-                        sh 'python3 test_selenium.py'
-                    }
+                    sh "docker run --rm -v \$(pwd):/app ananthvands/python-selenium:latest"
                 }
             }
         }
@@ -53,8 +47,9 @@ pipeline {
 
     post {
         always {
-            echo 'Cleaning up Docker resources...'
-            sh "${env.DOCKER_PATH} system prune -f"
+            script {
+                sh "${env.DOCKER_PATH} system prune -f"
+            }
         }
     }
 }

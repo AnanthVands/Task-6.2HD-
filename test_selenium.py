@@ -2,15 +2,19 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
-import os
+from selenium.webdriver.chrome.options import Options
 import time
 
-os.environ['WDM_LOCAL'] = '1'
-os.environ['WDM_CACHE_DIR'] = './.wdm'
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument('--disable-gpu')
+chrome_options.add_argument('--window-size=1920x1080')
 
-driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
 
-driver.get("http://localhost:8085") 
+driver.get("http://localhost:8085")
 
 time.sleep(3)
 
