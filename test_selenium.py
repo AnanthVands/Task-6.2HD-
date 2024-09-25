@@ -6,7 +6,7 @@ import time
 
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
-driver.get("http://localhost:8080") 
+driver.get("http://localhost:8085") 
 
 time.sleep(3)
 
