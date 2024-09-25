@@ -2,7 +2,11 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
+import os
 import time
+
+os.environ['WDM_LOCAL'] = '1'
+os.environ['WDM_CACHE_DIR'] = './.wdm'
 
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
