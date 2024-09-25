@@ -2,24 +2,29 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-id')  
-        SONARQUBE_CREDENTIALS = credentials('sonarqube-id')   
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-id')
+        SONARQUBE_CREDENTIALS = credentials('sonarqube-id')
+        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"  
     }
 
     stages {
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.build('ananthvands/book-haven:latest')
+                withEnv(['PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin']) {  
+                    script {
+                        docker.build('ananthvands/book-haven:latest')
+                    }
                 }
             }
         }
 
         stage('Push Docker Image to Docker Hub') {
             steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-id') {
-                        docker.image('ananthvands/book-haven:latest').push('latest')
+                withEnv(['PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin']) {  
+                    script {
+                        docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-id') {
+                            docker.image('ananthvands/book-haven:latest').push('latest')
+                        }
                     }
                 }
             }
